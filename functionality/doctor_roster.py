@@ -59,3 +59,6 @@ dr_p = Doctor(name="P",
               performable_duties=[1,2,4,5,6],
               working_days=["Monday", "Tuesday", "Wednesday", "Thursday", "Friday"],
               working_wknd=True)
+
+def all_doctors():
+    return [dr_p,dr_m,dr_k,dr_q,dr_s,dr_z,dr_y,dr_g,dr_i,dr_n]
