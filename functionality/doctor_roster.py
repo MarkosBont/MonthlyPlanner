@@ -1,0 +1,61 @@
+from functionality.doctor import Doctor
+
+dr_n = Doctor(name="N",
+              performable_duties=[4], # only if there are 5 doctors (not more)
+              working_days=["Monday", "Tuesday", "Wednesday", "Thursday", "Friday"],
+              working_wknd=False,
+              num_ef=0
+              )
+
+dr_i = Doctor(name="I",
+              performable_duties=[1,3,7],
+              working_days=["Tuesday", "Friday"],
+              working_wknd=False,
+              num_ef=2
+              )
+
+dr_g = Doctor(name="G",
+              performable_duties=[1,3,7],
+              working_days=["Tuesday"],
+              working_wknd=False,
+              num_ef=1
+              )
+
+dr_y = Doctor(name="Y",
+              performable_duties=[1,3,7],
+              working_days=["Monday"],
+              working_wknd=False,
+              num_ef=1
+              )
+
+dr_z = Doctor(name="Z",
+              performable_duties=[1,3,6,7], # After 1/12/25, he will be able to also do duty 5
+              working_days=["Monday", "Tuesday", "Wednesday", "Thursday", "Friday"], # Only after 1/11/25
+              working_wknd=True # Only from after 1/12/2025
+              )
+
+dr_s = Doctor(name="S",
+              performable_duties=[1,3,5,6,7],
+              working_days=["Monday", "Tuesday", "Wednesday", "Thursday", "Friday"],
+              working_wknd=True
+              )
+
+dr_q = Doctor(name="Q",
+              performable_duties=[1,2,3,4,5,6,7],
+              working_days=["Monday", "Tuesday", "Wednesday", "Thursday", "Friday"], # Doesn't work on Tuesdays until 31/12/2025
+              working_wknd=True)
+
+dr_k = Doctor(name="K",
+              performable_duties=[1,2,3,4,5,6],
+              working_days=["Monday", "Tuesday", "Wednesday", "Thursday", "Friday"],
+              working_wknd=True)
+
+dr_m = Doctor(name="M",
+              performable_duties=[1,2,3,4,5],
+              working_days=["Monday", "Tuesday", "Wednesday", "Thursday", "Friday"],
+              working_wknd=True)
+
+dr_p = Doctor(name="P",
+              performable_duties=[1,2,4,5,6],
+              working_days=["Monday", "Tuesday", "Wednesday", "Thursday", "Friday"],
+              working_wknd=True)
