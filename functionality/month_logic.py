@@ -2,6 +2,7 @@ from functionality.doctor_roster import *
 from functionality.working_day import WorkingDay
 import calendar
 from datetime import date
+from month_logic_functions import assign_duties
 
 doctors = all_doctors()
 working_days = []
@@ -40,36 +41,37 @@ for week in weeks:
             num_doctors = len(available_doctors)
 
             if num_doctors > 5:
+                if num_doctors == 6:
+                    day_duties = [1,2,3,4,5,6]
+                else:
+                    day_duties = [1,2,3,4,5,6,7]
+
                 duty_availability = {}
 
-                for duty in duties:
+                for duty in day_duties:
                     eligible_doctors = [doctor for doctor in available_doctors if duty in doctor.performable_duties]
                     if dr_n in eligible_doctors:
                         eligible_doctors.remove(dr_n)
 
                     duty_availability[duty] = eligible_doctors
 
-                sorted_duties = sorted(duty_availability.items(), key=lambda x: len(x[1]))
-
-                assigned_duties = {}
-                used_doctors = set()
-
-                for duty, candidates in sorted_duties:
-                    candidates = [doctor for doctor in candidates if doctor not in used_doctors]
-
-                    if not candidates:
-                        assigned_duties[duty] = None
-                        print(f"⚠ No doctor available for duty '{duty}' on {work_day.date}")
-                        continue
-
-                    selected = candidates[0]
-                    assigned_duties[duty] = selected
-                    used_doctors.add(selected)
-                    work_day.add_duties(selected, duty)
+                work_day = assign_duties(work_day, duty_availability, dr_m, dr_p, dr_s)
+                working_days.append(work_day)
 
             else:
+                if num_doctors == 5:
+                    day_duties = [1,2,3,4,5]
 
+                    duty_availability = {}
 
-        else:
-            continue
+                    for duty in day_duties:
+                        eligible_doctors = [doctor for doctor in available_doctors if duty in doctor.performable_duties]
+                        duty_availability[duty] = eligible_doctors
+
+                    work_day = assign_duties(work_day, duty_availability, dr_m, dr_p, dr_s)
+                    working_days.append(work_day)
+
+                else:
+                    print("Less than 5 doctors available on this work day: " + work_day.date.strftime('%Y-%m-%d'))
+
 
