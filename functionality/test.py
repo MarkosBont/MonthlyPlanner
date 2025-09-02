@@ -31,8 +31,8 @@ dr_y = Doctor(name="Y",
               )
 
 dr_z = Doctor(name="Z",
-              performable_duties=[1,3,6,7], # After 1/12/25, he will be able to also do duty 5
-              working_days=["Monday", "Tuesday", "Wednesday", "Thursday", "Friday"], # Only after 1/11/25
+              performable_duties=[1,3,5,6,7] if date.today() >= date(2025, 12, 1) else [1,3,6,7] if date.today() >= date(2025, 11, 1) else [], # After 1/12/25, he will be able to also do duty 5
+              working_days=["Monday", "Tuesday", "Wednesday", "Thursday", "Friday"] if date.today() >= date(2025,11,1) else [], # Only after 1/11/25
               working_wknd=True # Only from after 1/12/2025
               )
 
@@ -46,7 +46,7 @@ dr_q = Doctor(name="Q",
               performable_duties=[1,2,3,4,5,6,7],
               working_days=["Monday", "Tuesday", "Wednesday", "Thursday", "Friday"], # Doesn't work on Tuesdays until 31/12/2025
               working_wknd=True,
-              dates_of_leave=[(date(2025, 10, 5), date(2025, 10, 11))])
+              dates_of_leave=[(date(2025, 10, 15), date(2025, 10, 20))])
 
 dr_k = Doctor(name="K",
               performable_duties=[1,2,3,4,5,6],

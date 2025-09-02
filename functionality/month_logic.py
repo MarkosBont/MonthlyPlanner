@@ -81,6 +81,6 @@ def generate_working_days(doctors):
 
 
                     else:
-                        print("Less than 5 doctors available on this work day: " + work_day.date.strftime('%Y-%m-%d'))
+                        print("Less than 5 doctors available on this work day: " + work_day.date.strftime('%Y-%m-%d') + " Doctors: " + ", ".join(doctor.name for doctor in available_doctors))
 
     return working_days, doctor_counts

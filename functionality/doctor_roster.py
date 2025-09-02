@@ -1,4 +1,5 @@
 from functionality.classes.doctor import Doctor
+from datetime import date
 
 dr_n = Doctor(name="N",
               performable_duties=[4], # only if there are 5 doctors (not more)
@@ -29,7 +30,7 @@ dr_y = Doctor(name="Y",
               )
 
 dr_z = Doctor(name="Z",
-              performable_duties=[1,3,6,7], # After 1/12/25, he will be able to also do duty 5
+              performable_duties=[1,3,5,6,7] if date.today() >= date(2025, 12, 1) else [1,3,6,7] if date.today() >= date(2025, 11, 1) else [], # After 1/12/25, he will be able to also do duty 5
               working_days=["Monday", "Tuesday", "Wednesday", "Thursday", "Friday"], # Only after 1/11/25
               working_wknd=True # Only from after 1/12/2025
               )
@@ -61,4 +62,5 @@ dr_p = Doctor(name="P",
               working_wknd=True)
 
 def all_doctors():
-    return [dr_p,dr_m,dr_k,dr_q,dr_s,dr_z,dr_y,dr_g,dr_i,dr_n]
+    if date.today() >= date(2025, 11, 1):
+        return [dr_p,dr_m,dr_k,dr_q,dr_s,dr_z,dr_y,dr_g,dr_i,dr_n]
