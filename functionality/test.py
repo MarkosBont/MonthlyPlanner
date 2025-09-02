@@ -1,4 +1,6 @@
 from functionality.classes.doctor import Doctor
+from datetime import date
+from month_logic import *
 
 dr_n = Doctor(name="N",
               performable_duties=[4], # only if there are 5 doctors (not more)
@@ -11,8 +13,8 @@ dr_i = Doctor(name="I",
               performable_duties=[1,3,7],
               working_days=["Tuesday", "Friday"],
               working_wknd=False,
-              num_ef=2
-              )
+              num_ef=2,
+              dates_of_leave=[(date(2025, 10, 22), date(2025, 10, 25))])
 
 dr_g = Doctor(name="G",
               performable_duties=[1,3,7],
@@ -53,12 +55,22 @@ dr_k = Doctor(name="K",
 dr_m = Doctor(name="M",
               performable_duties=[1,2,3,4,5],
               working_days=["Monday", "Tuesday", "Wednesday", "Thursday", "Friday"],
-              working_wknd=True)
+              working_wknd=True,
+              dates_of_leave=[(date(2025, 10, 5), date(2025, 10, 11))])
 
 dr_p = Doctor(name="P",
               performable_duties=[1,2,4,5,6],
               working_days=["Monday", "Tuesday", "Wednesday", "Thursday", "Friday"],
               working_wknd=True)
 
-def all_doctors():
-    return [dr_p,dr_m,dr_k,dr_q,dr_s,dr_z,dr_y,dr_g,dr_i,dr_n]
+doctors = [dr_p,dr_m,dr_k, dr_q, dr_s, dr_z, dr_y, dr_g, dr_i, dr_n]
+
+working_days, doctor_counts = generate_working_days(doctors)
+
+
+for i in range(len(doctor_counts)):
+    day = working_days[i]
+    number_of_doctors = doctor_counts[i]
+    print("Date: " + day.date.strftime('%Y-%m-%d') + " \nDuties assigned: \n" + day.return_duties() + "Number of doctors: " + str(number_of_doctors) + "\n")
+
+
