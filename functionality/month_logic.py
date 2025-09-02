@@ -28,6 +28,8 @@ def generate_working_days(doctors):
 
             if day.month == next_month:
                 day_name = day.strftime('%A')
+                if day_name == "Saturday" or day_name == "Sunday":
+                    continue
                 work_day = WorkingDay(day, day_name)
                 available_doctors = []
                 for doctor in doctors:
@@ -69,6 +71,10 @@ def generate_working_days(doctors):
                         for duty in day_duties:
                             eligible_doctors = [doctor for doctor in available_doctors if duty in doctor.performable_duties]
                             duty_availability[duty] = eligible_doctors
+
+                        if 4 in duty_availability and dr_n in duty_availability[4]:
+                            work_day.add_duties(dr_n, 4)
+                            duty_availability[4] = dr_n
 
                         work_day = assign_duties(work_day, duty_availability, dr_m, dr_p, dr_s)
                         working_days.append(work_day)

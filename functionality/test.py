@@ -45,7 +45,8 @@ dr_s = Doctor(name="S",
 dr_q = Doctor(name="Q",
               performable_duties=[1,2,3,4,5,6,7],
               working_days=["Monday", "Tuesday", "Wednesday", "Thursday", "Friday"], # Doesn't work on Tuesdays until 31/12/2025
-              working_wknd=True)
+              working_wknd=True,
+              dates_of_leave=[(date(2025, 10, 5), date(2025, 10, 11))])
 
 dr_k = Doctor(name="K",
               performable_duties=[1,2,3,4,5,6],
