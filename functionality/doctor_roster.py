@@ -43,7 +43,7 @@ dr_s = Doctor(name="S",
 
 dr_q = Doctor(name="Q",
               performable_duties=[1,2,3,4,5,6,7],
-              working_days=["Monday", "Tuesday", "Wednesday", "Thursday", "Friday"], # Doesn't work on Tuesdays until 31/12/2025
+              working_days=["Monday", "Wednesday", "Thursday", "Friday"] if date.today() < date(2026,1,1) else ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday"], # Doesn't work on Tuesdays until 31/12/2025
               working_wknd=True)
 
 dr_k = Doctor(name="K",
