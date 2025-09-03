@@ -3,15 +3,16 @@ from functionality.classes.working_day import WorkingDay
 import calendar
 from datetime import date
 from month_logic_functions import assign_duties
+from functionality.classes.weekend import Weekend
 
 def generate_working_days(doctors):
     working_days = []
     doctor_counts = []
 
-    weekend_order = ["P", "S", "M", "Q", "K", "Z"]
-    current_weekend = 3
-
     today = date.today()
+
+    weekend_order = [dr_p, dr_s, dr_m, dr_q, dr_k, dr_z] if today >= date(2025, 12, 1) else [dr_p, dr_s, dr_m, dr_q, dr_k]
+    current_weekend_doctor_index = 3
 
     if today.month == 12:
         next_month = 1
@@ -28,7 +29,18 @@ def generate_working_days(doctors):
 
             if day.month == next_month:
                 day_name = day.strftime('%A')
-                if day_name == "Saturday" or day_name == "Sunday":
+                if day_name == "Saturday":
+                    for offset in range(1, len(weekend_order)):
+                        i = (current_weekend_doctor_index + offset) % len(weekend_order)
+                        doctor = weekend_order[i]
+                        if doctor.is_available_on(day, day_name):
+                            weekend = Weekend(day.isoformat(), doctor)
+                            working_days.append(weekend)
+                            current_weekend_doctor_index += 1
+                            break
+                    else:
+                        print(f"⚠ No weekend doctor available on {day.isoformat()}")
+                elif day_name == "Sunday":
                     continue
                 work_day = WorkingDay(day, day_name)
                 available_doctors = []

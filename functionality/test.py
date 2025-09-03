@@ -71,6 +71,9 @@ working_days, doctor_counts = generate_working_days(doctors)
 
 for i in range(len(doctor_counts)):
     day = working_days[i]
+    if isinstance(day, Weekend):
+        print("WEEKEND: Dr " + day.doctor_assigned.name + "\n")
+        continue
     number_of_doctors = doctor_counts[i]
     print("Date: " + day.date.strftime('%Y-%m-%d') + " \nDuties assigned: \n" + day.return_duties() + "Number of doctors: " + str(number_of_doctors) + "\n")
 
