@@ -23,6 +23,8 @@ class Doctor:
             else:
                 return False
 
+        return False
+
     def change_dates_of_leave(self, start_of_leave, end_of_leave):
         self.dates_of_leave = [(start_of_leave, end_of_leave)]
 
