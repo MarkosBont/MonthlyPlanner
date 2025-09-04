@@ -1,9 +1,9 @@
 class WorkingDay:
-    def __init__(self, date, day_name, doctors_on_leave = None, doctor_on_ef = None):
+    def __init__(self, date, day_name, doctor_on_ef = None):
         self.date = date
         self.day_name = day_name
         self.doctor_duties = {}
-        self.doctors_on_leave = doctors_on_leave
+        self.doctors_on_leave = []
         self.doctor_on_ef = doctor_on_ef
 
     def add_duties(self, doctor, duty):

@@ -1,12 +1,26 @@
-from functionality.doctor_roster import *
 from functionality.classes.working_day import WorkingDay
 import calendar
 from datetime import date
 from month_logic_functions import assign_duties
 from functionality.classes.weekend import Weekend
 
+
 def generate_working_days(doctors):
+
+    dr_p = next(d for d in doctors if d.name == "P")
+    dr_m = next(d for d in doctors if d.name == "M")
+    dr_k = next(d for d in doctors if d.name == "K")
+    dr_q = next(d for d in doctors if d.name == "Q")
+    dr_s = next(d for d in doctors if d.name == "S")
+    dr_z = next((d for d in doctors if d.name == "Z"), None)
+    dr_y = next(d for d in doctors if d.name == "Y")
+    dr_g = next(d for d in doctors if d.name == "G")
+    dr_i = next(d for d in doctors if d.name == "I")
+    dr_n = next(d for d in doctors if d.name == "N")
+
+
     working_days = []
+    weekends = {}
     doctor_counts = []
 
     today = date.today()
@@ -35,11 +49,12 @@ def generate_working_days(doctors):
                         doctor = weekend_order[i]
                         if doctor.is_available_on(day, day_name):
                             weekend = Weekend(day.isoformat(), doctor)
-                            working_days.append(weekend)
+                            weekends[day] = weekend
                             current_weekend_doctor_index += 1
                             break
                     else:
                         print(f"⚠ No weekend doctor available on {day.isoformat()}")
+                    continue
                 elif day_name == "Sunday":
                     continue
                 work_day = WorkingDay(day, day_name)
@@ -51,9 +66,9 @@ def generate_working_days(doctors):
                         work_day.add_doctor_on_leave(doctor)
 
                 num_doctors = len(available_doctors)
+                doctor_counts.append(available_doctors)
 
-                if num_doctors > 5:
-                    doctor_counts.append(num_doctors)
+                if num_doctors >= 6:
                     if num_doctors == 6:
                         day_duties = [1, 2, 3, 4, 5]
                     elif num_doctors == 7:
@@ -65,17 +80,17 @@ def generate_working_days(doctors):
 
                     for duty in day_duties:
                         eligible_doctors = [doctor for doctor in available_doctors if duty in doctor.performable_duties]
-                        if dr_n in eligible_doctors:
-                            eligible_doctors.remove(dr_n)
+                        eligible_doctors = [doctor for doctor in eligible_doctors if doctor.name != "N"]
+
 
                         duty_availability[duty] = eligible_doctors
+
 
                     work_day = assign_duties(work_day, duty_availability, dr_m, dr_p, dr_s)
                     working_days.append(work_day)
 
                 else:
                     if num_doctors == 5:
-                        doctor_counts.append(num_doctors)
                         day_duties = [1,2,3,4,5]
 
                         duty_availability = {}
@@ -86,7 +101,7 @@ def generate_working_days(doctors):
 
                         if 4 in duty_availability and dr_n in duty_availability[4]:
                             work_day.add_duties(dr_n, 4)
-                            duty_availability[4] = dr_n
+                            del duty_availability[4]
 
                         work_day = assign_duties(work_day, duty_availability, dr_m, dr_p, dr_s)
                         working_days.append(work_day)
@@ -95,4 +110,4 @@ def generate_working_days(doctors):
                     else:
                         print("Less than 5 doctors available on this work day: " + work_day.date.strftime('%Y-%m-%d') + " Doctors: " + ", ".join(doctor.name for doctor in available_doctors))
 
-    return working_days, doctor_counts
+    return working_days, doctor_counts, weekends
