@@ -5,6 +5,7 @@ class WorkingDay:
         self.doctor_duties = {}
         self.doctors_on_leave = []
         self.doctor_on_ef = doctor_on_ef
+        self.available_doctors = []
 
     def add_duties(self, doctor, duty):
         if doctor not in self.doctor_duties:
@@ -27,3 +28,9 @@ class WorkingDay:
             text += f"{doctor.name}: {duty}\n"
 
         return text
+
+    def number_of_doctors(self):
+        return len(self.doctor_duties)
+
+    def assign_available_doctors(self, available_doctors):
+        self.available_doctors = available_doctors
