@@ -133,9 +133,9 @@ def add_ef_to_workdays(working_days, weekends):
 
         # Get weekend doctor for this week (Saturday)
         weekend_doctor = None
-        for wknd_day, doc in weekends.items():
+        for wknd_day, weekend in weekends.items():
             if wknd_day.isocalendar()[1] == week:
-                weekend_doctor = doc
+                weekend_doctor = weekend.doctor_assigned
                 break
 
         # Identify EF-eligible doctors available this week
@@ -145,14 +145,15 @@ def add_ef_to_workdays(working_days, weekends):
                 if doctor.name in ef_order:
                     ef_eligible_doctors.add(doctor.name)
 
+
         # CASE 1: Fewer than 6 EF-eligible doctors
         if len(ef_eligible_doctors) < 6:
-            if weekend_doctor and weekend_doctor.doctor_assigned in ef_eligible_doctors:
+            if weekend_doctor and weekend_doctor.name in ef_eligible_doctors:
                 # Assign EF to weekend doctor on Tuesday if available
-                tuesday = next((d for d in days if d.day_name == "Monday" and weekend_doctor in d.available_doctors),
-                               None)
+                tuesday = next(
+                    (d for d in days if d.day_name == "Tuesday"),None)
                 if tuesday:
-                    tuesday.ef_doctor = weekend_doctor
+                    tuesday.add_doctor_on_ef(weekend_doctor)
                     ef_eligible_doctors.remove(weekend_doctor.name)
 
         # CASE 2: 6 or more — weekend doctor should be excluded
@@ -162,6 +163,10 @@ def add_ef_to_workdays(working_days, weekends):
         # Assign EF from ef_order (only one per doctor per week)
         used_ef_doctors = set()
         for day in days:
+            if day.doctor_on_ef:
+                used_ef_doctors.add(day.doctor_on_ef.name)
+                continue
+
             attempts = 0  # avoid infinite loop
             while attempts < len(ef_order):
                 name = ef_order[ef_index % len(ef_order)]
@@ -170,7 +175,7 @@ def add_ef_to_workdays(working_days, weekends):
 
                 # Skip the weekend doctor if it's Wed/Thu/Fri
                 if day.day_name in ["Wednesday", "Thursday", "Friday"]:
-                    if weekend_doctor and name == weekend_doctor.doctor_assigned.name:
+                    if weekend_doctor and name == weekend_doctor.name:
                         continue
 
                 if name in ef_eligible_doctors and name not in used_ef_doctors:
