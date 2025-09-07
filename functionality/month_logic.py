@@ -95,6 +95,15 @@ def generate_working_days(doctors):
 
                         duty_availability[duty] = eligible_doctors
 
+
+                    # ADDING CONSTRAINTS to duty assignments
+
+                    if day_name != "Wednesday" and dr_s in duty_availability[5]:
+                        duty_availability[5].remove(dr_s)
+
+                    if 6 in duty_availability and day_name != "Wednesday" and dr_s in duty_availability[6]:
+                        duty_availability[6].remove(dr_s)
+
                     if 4 in duty_availability:
                         preffered_doctor = current_duty_4_order[i] if i < len(current_duty_4_order) else None
                         if preffered_doctor and preffered_doctor in available_doctors:

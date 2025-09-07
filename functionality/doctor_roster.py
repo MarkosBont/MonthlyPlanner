@@ -12,8 +12,7 @@ dr_i = Doctor(name="I",
               performable_duties=[1,3,7],
               working_days=["Tuesday", "Friday"],
               working_wknd=False,
-              num_ef=2, # per month
-              dates_of_leave=[(date(2025, 10, 22), date(2025, 10, 25))])
+              num_ef=2)
 
 dr_g = Doctor(name="G",
               performable_duties=[1,3,7],
@@ -46,7 +45,6 @@ dr_q = Doctor(name="Q",
               performable_duties=[1,2,3,4,5,6,7],
               working_days=["Monday", "Wednesday", "Thursday", "Friday"] if date.today() < date(2026, 1, 1) else ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday"], # Doesn't work on Tuesdays until 31/12/2025
               working_wknd=True,
-              dates_of_leave=[(date(2025, 10, 15), date(2025, 10, 20))],
               num_ef=True)
 
 dr_k = Doctor(name="K",
@@ -59,7 +57,6 @@ dr_m = Doctor(name="M",
               performable_duties=[1,2,3,4,5],
               working_days=["Monday", "Tuesday", "Wednesday", "Thursday", "Friday"],
               working_wknd=True,
-              dates_of_leave=[(date(2025, 10, 5), date(2025, 10, 11))],
               num_ef=True)
 
 dr_p = Doctor(name="P",
