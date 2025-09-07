@@ -19,6 +19,13 @@ def generate_working_days(doctors):
     dr_i = next(d for d in doctors if d.name == "I")
     dr_n = next(d for d in doctors if d.name == "N")
 
+    week_1_duty_4_order = [dr_m, dr_p, dr_p, dr_k, dr_q]
+    week_2_duty_4_order = [dr_m, dr_p, dr_m, dr_k, dr_q]
+    week_3_duty_4_order = [dr_k, dr_p, dr_m, dr_q, dr_k]
+
+    duty_4_order = [week_1_duty_4_order, week_2_duty_4_order, week_3_duty_4_order]
+    duty_4_index = 0
+
 
     working_days = []
     weekends = {}
@@ -40,9 +47,10 @@ def generate_working_days(doctors):
     weeks = cal.monthdatescalendar(year, next_month)
 
     for week in weeks:
-        for day in week:
+        current_duty_4_order = duty_4_order[duty_4_index % 3]
+        duty_4_index += 1
+        for i, day in enumerate(week):
 
-            if day.month == next_month:
                 day_name = day.strftime('%A')
                 if day_name == "Saturday":
                     for offset in range(1, len(weekend_order)):
@@ -86,6 +94,17 @@ def generate_working_days(doctors):
 
 
                         duty_availability[duty] = eligible_doctors
+
+                    if 4 in duty_availability:
+                        preffered_doctor = current_duty_4_order[i] if i < len(current_duty_4_order) else None
+                        if preffered_doctor and preffered_doctor in available_doctors:
+                            work_day.add_duties(preffered_doctor, 4)
+                            del duty_availability[4]
+
+                            # Removing the doctor from all other duty availabilities:
+                            for duty, eligible_docs in duty_availability.items():
+                                if preffered_doctor in eligible_docs:
+                                    eligible_docs.remove(preffered_doctor)
 
 
                     work_day = assign_duties(work_day, duty_availability, dr_m, dr_p, dr_s)

@@ -24,7 +24,7 @@ class WorkingDay:
     def return_duties(self):
         dictionary = self.doctor_duties
         text = ""
-        for doctor, duty in dictionary.items():
+        for doctor, duty in sorted(dictionary.items(), key=lambda item: item[1]):
             text += f"{doctor.name}: {duty}\n"
 
         return text
