@@ -8,6 +8,12 @@ dr_n = Doctor(name="N",
               num_ef=0
               )
 
+dr_l = Doctor(name="L",
+              performable_duties=[1,2,3,4,5,6],
+              working_days=["Monday", "Tuesday", "Wednesday", "Thursday"],
+              working_wknd=False,
+              num_ef=True)
+
 dr_i = Doctor(name="I",
               performable_duties=[1,3,7],
               working_days=["Tuesday", "Friday"],
@@ -69,4 +75,4 @@ def all_doctors():
     if date.today() >= date(2025, 11, 1):
         return [dr_p,dr_m,dr_k,dr_q,dr_s,dr_z,dr_y,dr_g,dr_i,dr_n]
     else:
-        return [dr_p,dr_m,dr_k,dr_q,dr_s,dr_y,dr_g,dr_i,dr_n]
+        return [dr_p,dr_m,dr_k,dr_q,dr_s,dr_y,dr_g,dr_i,dr_n,dr_l]

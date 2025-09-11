@@ -14,6 +14,7 @@ def generate_working_days(doctors):
     dr_q = next(d for d in doctors if d.name == "Q")
     dr_s = next(d for d in doctors if d.name == "S")
     dr_z = next((d for d in doctors if d.name == "Z"), None)
+    dr_l = next(d for d in doctors if d.name == "L")
     dr_y = next(d for d in doctors if d.name == "Y")
     dr_g = next(d for d in doctors if d.name == "G")
     dr_i = next(d for d in doctors if d.name == "I")
@@ -104,6 +105,30 @@ def generate_working_days(doctors):
                     if 6 in duty_availability and day_name != "Wednesday" and dr_s in duty_availability[6]:
                         duty_availability[6].remove(dr_s)
 
+                    if 5 in duty_availability and day_name == "Tuesday":
+                        # Issue is that it is not getting doctor on duty 5 correctly. Maybe this is not getting the correct work day. Or the function which gets doctor on duty 5 of a day is wrong.
+                        yesterday_day_5_doctor = working_days[-1].get_duty_5_doctor()
+                        if yesterday_day_5_doctor:
+                            duty_availability[5] = [
+                                doc for doc in duty_availability[5]
+                                if doc.name != yesterday_day_5_doctor.name
+                            ]
+
+                    if 5 in duty_availability and day_name == "Wednesday":
+                        yesterday_day_5_doctor = working_days[-1].get_duty_5_doctor()
+                        monday_day_5_doctor = working_days[-2].get_duty_5_doctor()
+                        if yesterday_day_5_doctor:
+                            duty_availability[5] = [
+                                doc for doc in duty_availability[5]
+                                if doc.name != yesterday_day_5_doctor.name
+                            ]
+                        if monday_day_5_doctor:
+                            duty_availability[5] = [
+                                doc for doc in duty_availability[5]
+                                if doc.name != monday_day_5_doctor.name
+                            ]
+
+
                     if 4 in duty_availability:
                         preffered_doctor = current_duty_4_order[i] if i < len(current_duty_4_order) else None
                         if preffered_doctor and preffered_doctor in available_doctors:
@@ -146,7 +171,7 @@ def generate_working_days(doctors):
 
 
 def add_ef_to_workdays(working_days, weekends):
-    ef_order = ["M", "P", "K", "Q", "S"] if date.today() < date(2025,12,1) else ["M", "P", "K", "Q", "S", "Z"]
+    ef_order = ["M", "P", "L", "K", "Q", "S"] if date.today() < date(2025,12,1) else ["M", "P", "K", "Q", "S", "Z"]
     ef_index = 0
 
     weekly_days = defaultdict(list)

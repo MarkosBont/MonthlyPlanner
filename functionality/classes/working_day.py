@@ -34,3 +34,10 @@ class WorkingDay:
 
     def assign_available_doctors(self, available_doctors):
         self.available_doctors = available_doctors
+
+    def get_duty_5_doctor(self):
+        for doctor, duty in self.doctor_duties.items():
+            for duty in duty:
+                if duty == 5:
+                    return doctor
+
