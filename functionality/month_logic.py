@@ -32,6 +32,11 @@ def generate_working_days(doctors):
     weekends = {}
     doctor_counts = []
 
+    tuesday_duty_5_order = [dr_k, dr_l]
+    tuesday_duty_5_index = 0
+    wednesday_duty_5_order = [dr_s, dr_q]
+    wednesday_duty_5_index = 0
+
     today = date.today()
 
     weekend_order = [dr_p, dr_s, dr_m, dr_q, dr_k, dr_z] if today >= date(2025, 12, 1) else [dr_p, dr_s, dr_m, dr_q, dr_k]
@@ -99,7 +104,35 @@ def generate_working_days(doctors):
 
                     # ADDING CONSTRAINTS to duty assignments
 
-                    if day_name != "Wednesday" and dr_s in duty_availability[5]:
+                    if day_name == "Tuesday":
+                        this_doctor = tuesday_duty_5_order[tuesday_duty_5_index % 2]
+                        if 5 in duty_availability and this_doctor in duty_availability[5]:
+                            work_day.add_duties(this_doctor, 5)
+                            del duty_availability[5]
+
+                            # Removing the doctor from all other duty availabilities:
+                            for duty, eligible_docs in duty_availability.items():
+                                if this_doctor in eligible_docs:
+                                    eligible_docs.remove(this_doctor)
+
+                            tuesday_duty_5_index += 1
+
+
+                    if day_name == "Wednesday":
+                        this_doctor = wednesday_duty_5_order[wednesday_duty_5_index % 2]
+                        if 5 in duty_availability and this_doctor in duty_availability[5]:
+                            work_day.add_duties(this_doctor, 5)
+                            del duty_availability[5]
+
+                            # Removing the doctor from all other duty availabilities:
+                            for duty, eligible_docs in duty_availability.items():
+                                if this_doctor in eligible_docs:
+                                    eligible_docs.remove(this_doctor)
+
+                            wednesday_duty_5_index += 1
+
+
+                    if 5 in duty_availability and day_name != "Wednesday" and dr_s in duty_availability[5]:
                         duty_availability[5].remove(dr_s)
 
                     if 6 in duty_availability and day_name != "Wednesday" and dr_s in duty_availability[6]:
@@ -127,6 +160,8 @@ def generate_working_days(doctors):
                                 doc for doc in duty_availability[5]
                                 if doc.name != monday_day_5_doctor.name
                             ]
+
+
 
 
                     if 4 in duty_availability:
